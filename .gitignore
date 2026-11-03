@@ -42,3 +42,9 @@ terraform.rc
 # Optional: ignore plan files saved before destroying Terraform configuration
 # Uncomment the line below if you want to ignore planout files.
 # planout
+
+# Saved plan files (can contain sensitive values)
+*.tfplan
+
+# Backend settings with the account ID (each machine keeps its own)
+backend.hcl
