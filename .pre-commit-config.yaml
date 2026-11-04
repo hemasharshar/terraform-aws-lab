@@ -1,0 +1,37 @@
+# Checks that run automatically on every `git commit` in this repo.
+# One-time setup per machine:  pip install pre-commit   then   pre-commit install
+# Run on every file by hand:    pre-commit run --all-files
+repos:
+  # General file hygiene (official hooks from the pre-commit project)
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: detect-private-key
+      - id: check-added-large-files
+
+  # Terraform checks, using the tools installed on this machine
+  - repo: local
+    hooks:
+      - id: terraform-fmt
+        name: terraform fmt
+        entry: terraform fmt -recursive
+        language: system
+        files: \.tf$
+        pass_filenames: false
+
+      - id: terraform-validate
+        name: terraform validate
+        entry: python scripts/terraform_validate.py
+        language: system
+        files: \.tf$
+        pass_filenames: false
+
+      - id: tflint
+        name: tflint
+        entry: tflint --recursive
+        language: system
+        files: \.tf$
+        pass_filenames: false
